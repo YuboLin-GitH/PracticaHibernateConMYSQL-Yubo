@@ -16,8 +16,6 @@ public class Cita implements Serializable {
     private int idCita;
     @Column(name = "fechaCita")
     private Date fechaCita;
-    @Column(name = "IdPaciente")
-    private int IdPaciente;
     @Column(name = "IdEsp")
     private int IdEsp;
     @Column(name = "nombreEsp")
@@ -31,10 +29,9 @@ public class Cita implements Serializable {
     public Cita() {
     }
 
-    public Cita(int idCita, Date fechaCita, int fkIdPaciente, int fkIdEsp, String nombreEsp) {
+    public Cita(int idCita, Date fechaCita, int fkIdEsp, String nombreEsp) {
         this.idCita = idCita;
         this.fechaCita = fechaCita;
-        this.IdPaciente = fkIdPaciente;
         this.IdEsp = fkIdEsp;
         this.nombreEsp = nombreEsp;
     }
@@ -55,19 +52,12 @@ public class Cita implements Serializable {
         this.fechaCita = fechaCita;
     }
 
-    public int getFkIdPaciente() {
-        return IdPaciente;
-    }
 
-    public void setFkIdPaciente(int fkIdPaciente) {
-        this.IdPaciente = fkIdPaciente;
-    }
-
-    public int getFkIdEsp() {
+    public int getIdEsp() {
         return IdEsp;
     }
 
-    public void setFkIdEsp(int fkIdEsp) {
+    public void setIdEsp(int fkIdEsp) {
         this.IdEsp = fkIdEsp;
     }
 
@@ -84,9 +74,10 @@ public class Cita implements Serializable {
         return "Cita{" +
                 "idCita=" + idCita +
                 ", fechaCita=" + fechaCita +
-                ", fkIdPaciente=" + IdPaciente +
                 ", fkIdEsp=" + IdEsp +
                 ", nombreEsp='" + nombreEsp + '\'' +
                 '}';
     }
+    public Paciente getPaciente() { return paciente; }
+    public void setPaciente(Paciente paciente) { this.paciente = paciente; }
 }

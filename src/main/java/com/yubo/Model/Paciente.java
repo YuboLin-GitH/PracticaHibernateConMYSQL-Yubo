@@ -27,7 +27,7 @@ public class Paciente {
     @Column(name = "telefono")
     private int telefono;
 
-    @OneToMany(mappedBy = "Cita", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
     private List<Cita> citas ;
 
     public Paciente() {

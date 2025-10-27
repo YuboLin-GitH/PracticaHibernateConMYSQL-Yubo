@@ -71,7 +71,7 @@
             <Button fx:id="btNuevaCita" layoutX="49.0" layoutY="741.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="119.0" style="-fx-background-radius: 35;" text="Nueva Cita" onAction="#nuevaCita" />
             <Button fx:id="btBorrarCita" layoutX="500.0" layoutY="741.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="119.0" style="-fx-background-radius: 35;" text="Borrar Cita"  />
             <Button fx:id="btModificarCita" layoutX="275.0" layoutY="741.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="119.0" style="-fx-background-radius: 35;" text="Modificar Cita"  />
-            <Button fx:id="btVerCita" layoutX="449.0" layoutY="142.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="150.0" style="-fx-background-radius: 35;" text="Ver citas Paciente"  />
+            <Button fx:id="btVerCita" layoutX="449.0" layoutY="142.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="150.0" style="-fx-background-radius: 35;" text="Ver citas Paciente" onAction="#verCita" />
          </children>
       </AnchorPane>
    </children>

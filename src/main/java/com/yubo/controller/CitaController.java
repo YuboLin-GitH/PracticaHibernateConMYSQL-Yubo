@@ -89,7 +89,6 @@ public class CitaController {
         try (Session session = HibernateUtil.getSession()){
             List<Cita> pelicula = citaDAO.listarCita(session);
             tvCitasPaciente.setItems(FXCollections.observableList(pelicula));
-
         }
     }
 
@@ -104,7 +103,7 @@ public class CitaController {
         tfTelefono.setText(String.valueOf(paciente.getTelefono()));
         tfDNI.setText(paciente.getDni());
 
-
+        tfDNI.setDisable(true);
         tfNombre.setDisable(true);
         tfDireccion.setDisable(true);
         tfTelefono.setDisable(true);
@@ -153,6 +152,10 @@ public class CitaController {
     }
 
 
+    @FXML
+    public void verCita() {
+        cargarDatos();
+    }
 
     @FXML
     public void nuevaCita() {
@@ -166,7 +169,8 @@ public class CitaController {
         try(Session session = HibernateUtil.getSession()) {
             Cita c = new Cita();
             c.setFechaCita(Date.valueOf(fechaSeleccionada));
-            c.setFkIdPaciente(paciente.getIdPaciente());
+            c.setNombreEsp(espSeleccionada.getNombreEsp());
+            c.setPaciente(paciente);
 
             citaDAO.insertarCita(session, c);
 
