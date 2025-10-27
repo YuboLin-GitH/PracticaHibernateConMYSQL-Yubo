@@ -68,23 +68,6 @@ public class CitaController {
     private Cita citaSeleccionada;
 
 
-    /*
-        public CitaController() {
-
-
-            try {
-                citaDAOImpl.conectar();
-            } catch (SQLException sqle) {
-                AlertUtils.mostrarError("Error al conectar con la base de datos");
-            } catch (ClassNotFoundException cnfe) {
-                AlertUtils.mostrarError("Error al iniciar la aplicación");
-            } catch (IOException ioe) {
-                AlertUtils.mostrarError("Error al cargar la configuración");
-            }
-
-            System.out.println(System.getProperty("user.home"));
-        }
-    */
     @FXML
     public void initialize() {
 
@@ -132,8 +115,7 @@ public class CitaController {
         EspecialidadDAO especialidadDAO = new EspecialidadDAO();
         try {
 
-            especialidadDAO.conectar();
-            List<Especialidad> especialidades = especialidadDAO.obtenerTodas();
+            List<Especialidad> especialidades = especialidadDAO.obtenerEspecialidad();
             if (especialidades.isEmpty()) {
                 AlertUtils.mostrarError("Error al obtener las especialidades");
                 return;
@@ -142,7 +124,7 @@ public class CitaController {
             cbEspecialidad.getItems().addAll(especialidades);
 
             for (Especialidad esp : especialidades) {
-                if ("Cirugía".equals(esp.getNombreEsp())) {
+                if ("Cirugia".equals(esp.getNombre())) {
                     cbEspecialidad.setValue(esp);
                     break;
                 }
@@ -151,12 +133,6 @@ public class CitaController {
 
             AlertUtils.mostrarError("Error：" + e.getMessage());
             e.printStackTrace();
-        } finally {
-            try {
-                especialidadDAO.desconectar();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
     }
     private void enlazarSeleccionDeTabla() {
@@ -167,7 +143,7 @@ public class CitaController {
                     dpFechaCita.setValue(((Date) newVal.getFechaCita()).toLocalDate());
                 }
                 for (Especialidad esp : cbEspecialidad.getItems()) {
-                    if (esp.getIdEsp() == newVal.getFkIdEsp()) {
+                    if (esp.getNombre().equals(newVal.getNombreEsp())) {
                         cbEspecialidad.setValue(esp);
                         break;
                     }
@@ -190,7 +166,6 @@ public class CitaController {
         try(Session session = HibernateUtil.getSession()) {
             Cita c = new Cita();
             c.setFechaCita(Date.valueOf(fechaSeleccionada));
-            c.setFkIdEsp(espSeleccionada.getIdEsp());
             c.setFkIdPaciente(paciente.getIdPaciente());
 
             citaDAO.insertarCita(session, c);

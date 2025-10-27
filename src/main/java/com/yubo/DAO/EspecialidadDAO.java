@@ -1,58 +1,27 @@
 package com.yubo.DAO;
 
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yubo.Model.Especialidad;
-import com.yubo.util.R;
 
+import java.io.File;
 import java.io.IOException;
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
+
 
 
 
 public class EspecialidadDAO {
 
-    private Connection conexion;
+    private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
 
-    public void conectar() throws ClassNotFoundException, SQLException, IOException {
-        Properties configuration = new Properties();
-        configuration.load(R.getProperties("database.properties"));
-        String host = configuration.getProperty("host");
-        String port = configuration.getProperty("port");
-        String name = configuration.getProperty("name");
-        String username = configuration.getProperty("username");
-        String password = configuration.getProperty("password");
+    public static List<Especialidad> obtenerEspecialidad() throws IOException {
 
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        conexion = DriverManager.getConnection(
-                "jdbc:mysql://" + host + ":" + port + "/" + name + "?serverTimezone=UTC",
-                username, password
-        );
+        ArrayList<Especialidad> especialidad =
+                JSON_MAPPER.readValue(new File("src/main/resources/BaseDatos/especialidades.json"),
+                        JSON_MAPPER.getTypeFactory().constructCollectionType
+                                (ArrayList.class, Especialidad.class));
+
+        return especialidad;
     }
-    public void desconectar() throws SQLException {
-        if (conexion != null) {
-            conexion.close();
-        }
-    }
-
-    public List<Especialidad> obtenerTodas() throws SQLException {
-        List<Especialidad> especialidades = new ArrayList<>();
-        String sql = "SELECT idEsp, nombreEsp FROM especialidad";
-
-        try (PreparedStatement stmt = conexion.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-
-                int id = rs.getInt("idEsp");
-                String nombre = rs.getString("nombreEsp");
-                especialidades.add(new Especialidad(id, nombre));
-            }
-        }
-        return especialidades;
-    }
-
-
 }

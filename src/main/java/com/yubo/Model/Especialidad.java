@@ -3,36 +3,27 @@ package com.yubo.Model;
 
 
 public class Especialidad {
-    private int idEsp;
-    private String nombreEsp;
+    private String nombre;
 
 
     public Especialidad() {
     }
 
-    public Especialidad(int idEsp, String nombreEsp) {
-        this.idEsp = idEsp;
-        this.nombreEsp = nombreEsp;
+    public Especialidad(String nombre) {
+        this.nombre = nombre;
     }
 
-    public int getIdEsp() {
-        return idEsp;
+
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setIdEsp(int idEsp) {
-        this.idEsp = idEsp;
-    }
-
-    public String getNombreEsp() {
-        return nombreEsp;
-    }
-
-    public void setNombreEsp(String nombreEsp) {
-        this.nombreEsp = nombreEsp;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     @Override
     public String toString() {
-        return nombreEsp;
+        return nombre;
     }
 }
