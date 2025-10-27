@@ -1,14 +1,32 @@
 package com.yubo.Model;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
+@Entity
+@Table(name = "Cita")
+public class Cita implements Serializable {
 
-public class Cita  {
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "idCita")
     private int idCita;
+    @Column(name = "fechaCita")
     private Date fechaCita;
-    private int fkIdPaciente;
-    private int fkIdEsp;
+    @Column(name = "IdPaciente")
+    private int IdPaciente;
+    @Column(name = "IdEsp")
+    private int IdEsp;
+    @Column(name = "nombreEsp")
     private String nombreEsp;
+
+    @ManyToOne
+    @JoinColumn(name="idPaciente",referencedColumnName="idPaciente")
+    private Paciente paciente;
+
 
     public Cita() {
     }
@@ -16,8 +34,8 @@ public class Cita  {
     public Cita(int idCita, Date fechaCita, int fkIdPaciente, int fkIdEsp, String nombreEsp) {
         this.idCita = idCita;
         this.fechaCita = fechaCita;
-        this.fkIdPaciente = fkIdPaciente;
-        this.fkIdEsp = fkIdEsp;
+        this.IdPaciente = fkIdPaciente;
+        this.IdEsp = fkIdEsp;
         this.nombreEsp = nombreEsp;
     }
 
@@ -38,19 +56,19 @@ public class Cita  {
     }
 
     public int getFkIdPaciente() {
-        return fkIdPaciente;
+        return IdPaciente;
     }
 
     public void setFkIdPaciente(int fkIdPaciente) {
-        this.fkIdPaciente = fkIdPaciente;
+        this.IdPaciente = fkIdPaciente;
     }
 
     public int getFkIdEsp() {
-        return fkIdEsp;
+        return IdEsp;
     }
 
     public void setFkIdEsp(int fkIdEsp) {
-        this.fkIdEsp = fkIdEsp;
+        this.IdEsp = fkIdEsp;
     }
 
     public String getNombreEsp() {
@@ -66,8 +84,8 @@ public class Cita  {
         return "Cita{" +
                 "idCita=" + idCita +
                 ", fechaCita=" + fechaCita +
-                ", fkIdPaciente=" + fkIdPaciente +
-                ", fkIdEsp=" + fkIdEsp +
+                ", fkIdPaciente=" + IdPaciente +
+                ", fkIdEsp=" + IdEsp +
                 ", nombreEsp='" + nombreEsp + '\'' +
                 '}';
     }

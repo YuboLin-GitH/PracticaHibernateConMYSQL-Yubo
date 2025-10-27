@@ -2,18 +2,21 @@ package com.yubo.controller;
 
 
 import com.yubo.DAO.CitaDAO;
+import com.yubo.DAO.CitaDAOImpl;
 import com.yubo.DAO.EspecialidadDAO;
 import com.yubo.DAO.UsuarioDAO;
 import com.yubo.Model.Cita;
 import com.yubo.Model.Especialidad;
 import com.yubo.Model.Paciente;
 import com.yubo.util.AlertUtils;
+import com.yubo.util.HibernateUtil;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import org.hibernate.Session;
 
 
 import java.io.IOException;
@@ -24,6 +27,7 @@ import java.util.List;
 
 
 public class CitaController {
+    private final CitaDAO citaDAO = new CitaDAOImpl();
     @FXML
     public TextField tfTelefono;
     @FXML
@@ -58,29 +62,29 @@ public class CitaController {
     private TableColumn<Cita, String> colEspecialidad;
 
 
-    private final CitaDAO citaDAO ;
+
     private Paciente paciente;
 
     private Cita citaSeleccionada;
 
 
+    /*
+        public CitaController() {
 
-    public CitaController() {
-        citaDAO = new CitaDAO();
 
-        try {
-            citaDAO.conectar();
-        } catch (SQLException sqle) {
-            AlertUtils.mostrarError("Error al conectar con la base de datos");
-        } catch (ClassNotFoundException cnfe) {
-            AlertUtils.mostrarError("Error al iniciar la aplicación");
-        } catch (IOException ioe) {
-            AlertUtils.mostrarError("Error al cargar la configuración");
+            try {
+                citaDAOImpl.conectar();
+            } catch (SQLException sqle) {
+                AlertUtils.mostrarError("Error al conectar con la base de datos");
+            } catch (ClassNotFoundException cnfe) {
+                AlertUtils.mostrarError("Error al iniciar la aplicación");
+            } catch (IOException ioe) {
+                AlertUtils.mostrarError("Error al cargar la configuración");
+            }
+
+            System.out.println(System.getProperty("user.home"));
         }
-
-        System.out.println(System.getProperty("user.home"));
-    }
-
+    */
     @FXML
     public void initialize() {
 
@@ -91,13 +95,18 @@ public class CitaController {
         cargarEspecialidades();
 
         enlazarSeleccionDeTabla();
-        tfDNI.setOnKeyPressed(this::manejarEnterParaVerCita);
+
     }
 
-    private void manejarEnterParaVerCita(KeyEvent event) {
 
-        if (event.getCode() == KeyCode.ENTER) {
-            verCita();
+    public void cargarDatos() {
+        //modoEdicion(false);
+        tvCitasPaciente.getItems().clear();
+
+        try (Session session = HibernateUtil.getSession()){
+            List<Cita> pelicula = citaDAO.listarCita(session);
+            tvCitasPaciente.setItems(FXCollections.observableList(pelicula));
+
         }
     }
 
@@ -169,154 +178,34 @@ public class CitaController {
 
 
 
+
+
     @FXML
-    public void verCita() {
+    public void nuevoCita() {
 
-
-        try {
-            String dniIngresado = tfDNI.getText().trim();
-            if (dniIngresado.isEmpty()) {
-                AlertUtils.mostrarError("Introduce un DNI válido");
-                return;
-            }
-
-
-            UsuarioDAO usuarioDAO = new UsuarioDAO();
-            usuarioDAO.conectar();
-            Paciente nuevoPaciente = usuarioDAO.buscarPorDni(dniIngresado);
-            usuarioDAO.desconectar();
-
-            if (nuevoPaciente == null) {
-                AlertUtils.mostrarError("No se encontró paciente con ese DNI");
-                return;
-            }
-
-
-            this.paciente = nuevoPaciente;
-            mostrarDatosPaciente();
-
-
-            citaDAO.conectar();
-            List<Cita> citas = citaDAO.obtenerCitaPorPacienteId(paciente.getIdPaciente());
-            tvCitasPaciente.setItems(FXCollections.observableArrayList(citas));
-            citaDAO.desconectar();
-
-        } catch (Exception e) {
-            AlertUtils.mostrarError("Error al buscar paciente: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-    @FXML
-    public void nuevaCita() {
-
-        if (paciente == null) {
-            AlertUtils.mostrarError("Introduce DNI de paciente");
-            return;
-        }
         LocalDate fechaSeleccionada = dpFechaCita.getValue();
         Especialidad espSeleccionada = cbEspecialidad.getValue();
         if (fechaSeleccionada == null || espSeleccionada == null) {
             AlertUtils.mostrarError("Elegir fecha de cita o Especialidad");
             return;
         }
+        try(Session session = HibernateUtil.getSession()) {
+            Cita c = new Cita();
+            c.setFechaCita(Date.valueOf(fechaSeleccionada));
+            c.setFkIdEsp(espSeleccionada.getIdEsp());
+            c.setFkIdPaciente(paciente.getIdPaciente());
 
-        try {
-            citaDAO.conectar();
-            int nuevoId = citaDAO.obtenerSiguienteIdCita();
+            citaDAO.insertarCita(session, c);
 
-            Cita nuevaCita = new Cita();
-            nuevaCita.setIdCita(nuevoId);
-            nuevaCita.setFechaCita(Date.valueOf(fechaSeleccionada));
-            nuevaCita.setFkIdEsp(espSeleccionada.getIdEsp());
-            nuevaCita.setFkIdPaciente(paciente.getIdPaciente());
-
-
-            citaDAO.guardarCita(nuevaCita);
-            AlertUtils.mostrarInformacion("Cita creado：" + nuevoId);
-
-
-            verCita();
+            AlertUtils.mostrarInformacion("Cita insertada correctamente");
+            cargarDatos();
             limpiarCajas();
-        } catch (Exception e) {
-            AlertUtils.mostrarError("Error：" + e.getMessage());
-        } finally {
-            try {
-                citaDAO.desconectar();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+
+        }catch (Exception e){
+            System.out.println("Error de Insertar Cita");
         }
     }
 
-    @FXML
-    public void modificarCita() {
-
-        if (citaSeleccionada == null) {
-            AlertUtils.mostrarError("El seleccionado no existe");
-            return;
-        }
-        LocalDate fechaModificada = dpFechaCita.getValue();
-        Especialidad espModificada = cbEspecialidad.getValue();
-        if (fechaModificada == null || espModificada == null) {
-            AlertUtils.mostrarError("Eliger bien cita y especificada");
-            return;
-        }
-
-        try {
-            citaDAO.conectar();
-
-            Cita citaModificada = new Cita();
-            citaModificada.setIdCita(citaSeleccionada.getIdCita());
-            citaModificada.setFechaCita(Date.valueOf(fechaModificada));
-            citaModificada.setFkIdEsp(espModificada.getIdEsp());
-            citaModificada.setFkIdPaciente(paciente.getIdPaciente());
-
-
-            citaDAO.modificarCita(citaSeleccionada, citaModificada);
-            AlertUtils.mostrarInformacion("Cita actualizada");
-
-
-            verCita();
-            limpiarCajas();
-            citaSeleccionada = null;
-        } catch (Exception e) {
-            AlertUtils.mostrarError("Error：" + e.getMessage());
-        } finally {
-            try {
-                citaDAO.desconectar();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @FXML
-    public void borrarCita() {
-
-        if (citaSeleccionada == null) {
-            AlertUtils.mostrarError("el seleccionado no existe");
-            return;
-        }
-        try {
-            citaDAO.conectar();
-
-            citaDAO.eliminarCita(citaSeleccionada);
-            AlertUtils.mostrarInformacion("Cita eliminada");
-
-
-            verCita();
-            limpiarCajas();
-            citaSeleccionada = null;
-        } catch (Exception e) {
-            AlertUtils.mostrarError("Error：" + e.getMessage());
-        } finally {
-            try {
-                citaDAO.desconectar();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
 
 

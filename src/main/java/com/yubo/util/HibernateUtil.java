@@ -1,6 +1,7 @@
 package com.yubo.util;
 
 import com.yubo.Model.Cita;
+import com.yubo.Model.Paciente;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -22,9 +23,11 @@ public class HibernateUtil {
 	static SessionFactory factory = null;
 	static {
 		Configuration cfg = new Configuration();
-		cfg.configure("hibernate.cfg.xml");
+		cfg.configure("configuration/hibernate.cfg.xml");
 
 		cfg.addAnnotatedClass(Cita.class);
+        cfg.addAnnotatedClass(Paciente.class);
+
 		factory = cfg.buildSessionFactory();
 	}
 	
