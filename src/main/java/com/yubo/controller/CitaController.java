@@ -178,10 +178,8 @@ public class CitaController {
 
 
 
-
-
     @FXML
-    public void nuevoCita() {
+    public void nuevaCita() {
 
         LocalDate fechaSeleccionada = dpFechaCita.getValue();
         Especialidad espSeleccionada = cbEspecialidad.getValue();
