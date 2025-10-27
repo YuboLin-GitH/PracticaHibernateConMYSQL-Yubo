@@ -4,7 +4,6 @@ package com.yubo.controller;
 import com.yubo.DAO.CitaDAO;
 import com.yubo.DAO.CitaDAOImpl;
 import com.yubo.DAO.EspecialidadDAO;
-import com.yubo.DAO.UsuarioDAO;
 import com.yubo.Model.Cita;
 import com.yubo.Model.Especialidad;
 import com.yubo.Model.Paciente;
@@ -14,15 +13,14 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import org.hibernate.Session;
-
-
-import java.io.IOException;
-import java.sql.Date;
-import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.ZoneId;
+
+
+
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -87,8 +85,14 @@ public class CitaController {
         tvCitasPaciente.getItems().clear();
 
         try (Session session = HibernateUtil.getSession()){
-            List<Cita> pelicula = citaDAO.listarCita(session);
-            tvCitasPaciente.setItems(FXCollections.observableList(pelicula));
+            List<Cita> citas= citaDAO.listarCita(session);
+            List<Cita> estePaciente = new ArrayList<>();
+            for (Cita c : citas) {
+                if (c.getPaciente() != null && c.getPaciente().getIdPaciente() == paciente.getIdPaciente()) {
+                    estePaciente.add(c);
+                }
+            }
+            tvCitasPaciente.setItems(FXCollections.observableList(estePaciente));
         }
     }
 
@@ -138,9 +142,14 @@ public class CitaController {
         tvCitasPaciente.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
                 citaSeleccionada = newVal;
-                if (newVal.getFechaCita() != null) {
-                    dpFechaCita.setValue(((Date) newVal.getFechaCita()).toLocalDate());
-                }
+            if (newVal.getFechaCita() != null) {
+                dpFechaCita.setValue(
+                        newVal.getFechaCita().toInstant()
+                                .atZone(java.time.ZoneId.systemDefault())
+                                .toLocalDate()
+                );
+            }
+
                 for (Especialidad esp : cbEspecialidad.getItems()) {
                     if (esp.getNombreEsp().equals(newVal.getNombreEsp())) {
                         cbEspecialidad.setValue(esp);

@@ -35,7 +35,7 @@ public class CitaDAOImpl implements CitaDAO{
     @Override
     public List<Cita> listarCita(Session session)
     {
-        List<Cita> lista = session.createQuery("from Cita", Cita.class).list();
+        List<Cita> lista = session.createQuery("from Cita ", Cita.class).list();
         return lista;
 
         //list.forEach(System.out::println);//version 1.8 de java

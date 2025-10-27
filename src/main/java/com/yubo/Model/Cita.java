@@ -14,10 +14,10 @@ public class Cita implements Serializable {
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "idCita")
     private int idCita;
+
     @Column(name = "fechaCita")
     private Date fechaCita;
-    @Column(name = "IdEsp")
-    private int IdEsp;
+
     @Column(name = "nombreEsp")
     private String nombreEsp;
 
@@ -29,10 +29,9 @@ public class Cita implements Serializable {
     public Cita() {
     }
 
-    public Cita(int idCita, Date fechaCita, int fkIdEsp, String nombreEsp) {
+    public Cita(int idCita, Date fechaCita, String nombreEsp) {
         this.idCita = idCita;
         this.fechaCita = fechaCita;
-        this.IdEsp = fkIdEsp;
         this.nombreEsp = nombreEsp;
     }
 
@@ -53,14 +52,6 @@ public class Cita implements Serializable {
     }
 
 
-    public int getIdEsp() {
-        return IdEsp;
-    }
-
-    public void setIdEsp(int fkIdEsp) {
-        this.IdEsp = fkIdEsp;
-    }
-
     public String getNombreEsp() {
         return nombreEsp;
     }
@@ -74,7 +65,6 @@ public class Cita implements Serializable {
         return "Cita{" +
                 "idCita=" + idCita +
                 ", fechaCita=" + fechaCita +
-                ", fkIdEsp=" + IdEsp +
                 ", nombreEsp='" + nombreEsp + '\'' +
                 '}';
     }

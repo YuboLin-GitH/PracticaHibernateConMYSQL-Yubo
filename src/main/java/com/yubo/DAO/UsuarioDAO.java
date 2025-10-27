@@ -44,19 +44,6 @@ public class UsuarioDAO {
         return p;
     }
 
-    public Paciente buscarPorDni(String dni) throws SQLException {
-        String sql = "SELECT * FROM paciente WHERE dni = ?";
-        try (PreparedStatement sentencia = conexion.prepareStatement(sql)) {
-            sentencia.setString(1, dni);
-            ResultSet resultado = sentencia.executeQuery();
-
-            if (resultado.next()) {
-                return resultSetToPaciente(resultado);
-            }
-        }
-        return null;
-    }
-
 
     public Paciente valiadarUsuario(String nombre, String passwordPlano) throws SQLException{
         String sql = "SELECT * FROM paciente WHERE nombre = ? AND password = ?";
