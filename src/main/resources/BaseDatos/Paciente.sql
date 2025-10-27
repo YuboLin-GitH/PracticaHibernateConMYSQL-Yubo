@@ -23,31 +23,20 @@ telefono int(9)
  (8,"11501548H","Daniel",SHA2("daniel",256),"c/ HHH", 691246578);
  
 
-CREATE TABLE IF NOT EXISTS Especialidad(
- idEsp int unsigned auto_increment primary key,
- nombreEsp enum("Cirugía","Dermatología","Pediatría","Oftalmología")
-);
-INSERT INTO Especialidad (nombreEsp) VALUES
-    ("Cirugía"),
-    ("Dermatología"),
-    ("Pediatría"),
-    ("Oftalmología");
-
-
 
  CREATE TABLE IF NOT EXISTS Cita(
  idCita int unsigned auto_increment NOT NULL primary key,
  fechaCita date,
- idEsp int unsigned,
+ nombreEsp varchar(30),
  idPaciente int unsigned
 
  )ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=1;
 
 
-INSERT INTO Cita (fechaCita, idEsp, idPaciente) VALUES
-('2024-12-10', 1, 1),
-('2024-12-12', 2, 2),
-('2024-12-15', 3, 3),
-('2024-12-08', 4, 4),
-('2024-12-11', 1, 5),
-('2024-12-18', 2, 6);
+INSERT INTO Cita (fechaCita, nombreEsp, idPaciente) VALUES
+('2024-12-10', "Cardiología", 1),
+('2024-12-12', "Traumatología", 2),
+('2024-12-15', "Neumología", 3),
+('2024-12-08', "Psiquiatría", 4),
+('2024-12-11', "Dermatología", 5),
+('2024-12-18', "Cirugia", 6);

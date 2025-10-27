@@ -3,27 +3,27 @@ package com.yubo.Model;
 
 
 public class Especialidad {
-    private String nombre;
+    private String nombreEsp;
 
 
     public Especialidad() {
     }
 
-    public Especialidad(String nombre) {
-        this.nombre = nombre;
+    public Especialidad(String nombreEsp) {
+        this.nombreEsp = nombreEsp;
     }
 
 
-    public String getNombre() {
-        return nombre;
+    public String getNombreEsp() {
+        return nombreEsp;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombreEsp(String nombreEsp) {
+        this.nombreEsp = nombreEsp;
     }
 
     @Override
     public String toString() {
-        return nombre;
+        return nombreEsp;
     }
 }

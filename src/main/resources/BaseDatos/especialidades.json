@@ -1,35 +1,35 @@
 [
   {
-    "nombre": "Traumatología"
+    "nombreEsp": "Traumatología"
    
   },
   {
     
-    "nombre": "Cardiología"
+    "nombreEsp": "Cardiología"
     
   },
   {
-    "nombre": "Medico de familia"
+    "nombreEsp": "Medico de familia"
 
   },
   {
 
-    "nombre": "Neumología"
+    "nombreEsp": "Neumología"
 
   },
   {
 
-    "nombre": "Psiquiatría"
+    "nombreEsp": "Psiquiatría"
 
   },
   {
 
-    "nombre": "Cirugia"
+    "nombreEsp": "Cirugia"
 
   },
   {
   
-    "nombre": "Dermatología"
+    "nombreEsp": "Dermatología"
     
   }
 

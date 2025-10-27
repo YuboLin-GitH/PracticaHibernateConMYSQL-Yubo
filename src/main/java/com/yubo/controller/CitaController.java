@@ -124,7 +124,7 @@ public class CitaController {
             cbEspecialidad.getItems().addAll(especialidades);
 
             for (Especialidad esp : especialidades) {
-                if ("Cirugia".equals(esp.getNombre())) {
+                if ("Cirugia".equals(esp.getNombreEsp())) {
                     cbEspecialidad.setValue(esp);
                     break;
                 }
@@ -143,7 +143,7 @@ public class CitaController {
                     dpFechaCita.setValue(((Date) newVal.getFechaCita()).toLocalDate());
                 }
                 for (Especialidad esp : cbEspecialidad.getItems()) {
-                    if (esp.getNombre().equals(newVal.getNombreEsp())) {
+                    if (esp.getNombreEsp().equals(newVal.getNombreEsp())) {
                         cbEspecialidad.setValue(esp);
                         break;
                     }
