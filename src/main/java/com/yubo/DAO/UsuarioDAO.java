@@ -2,22 +2,15 @@ package com.yubo.DAO;
 
 
 import org.apache.commons.codec.digest.DigestUtils;
-import com.yubo.domain.Paciente;
+import com.yubo.Model.Paciente;
 import com.yubo.util.R;
 
 import java.io.IOException;
 import java.sql.*;
 import java.util.Properties;
 
-/**
- * ClassName: UsuarioDAO
- * Package: org.example.practica1medicoyubo.DAO
- * Description:
- *
- * @Author Yubo
- * @Create 28/09/2025 22:07
- * @Version 1.0
- */
+
+
 public class UsuarioDAO {
 
     private Connection conexion;

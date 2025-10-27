@@ -1,7 +1,7 @@
 package com.yubo.controller;
 
 import com.yubo.DAO.UsuarioDAO;
-import com.yubo.domain.Paciente;
+import com.yubo.Model.Paciente;
 import com.yubo.util.R;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

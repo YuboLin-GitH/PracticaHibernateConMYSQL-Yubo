@@ -3,14 +3,14 @@ CREATE DATABASE Usuario;
 Use Usuario;
 
 
-CREATE TABLE Paciente(
-idPaciente int unsigned auto_increment primary key, 
+CREATE TABLE IF NOT EXISTS Paciente(
+idPaciente int unsigned auto_increment NOT NULL primary key,
 dni varchar(9),
 nombre varchar(30),
 password varchar(64),
 direccion varchar(100),
 telefono int(9) 
- );
+ )ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=1;
  
   INSERT INTO Paciente  VALUES
  (1,"12345678A","David",SHA2("david",256),"c/ AAA", 611222333),
@@ -23,7 +23,7 @@ telefono int(9)
  (8,"11501548H","Daniel",SHA2("daniel",256),"c/ HHH", 691246578);
  
 
-CREATE TABLE Especialidad(
+CREATE TABLE IF NOT EXISTS Especialidad(
  idEsp int unsigned auto_increment primary key,
  nombreEsp enum("Cirugía","Dermatología","Pediatría","Oftalmología")
 );
@@ -35,17 +35,16 @@ INSERT INTO Especialidad (nombreEsp) VALUES
 
 
 
- CREATE TABLE Cita(
- idCita int unsigned auto_increment primary key,
+ CREATE TABLE IF NOT EXISTS Cita(
+ idCita int unsigned auto_increment NOT NULL primary key,
  fechaCita date,
- fk_idEsp int unsigned,
- FOREIGN KEY (fk_idEsp) REFERENCES Especialidad(idEsp),
-  fk_idPaciente int unsigned,
- FOREIGN KEY (fk_idPaciente) REFERENCES Paciente(idPaciente)
- );
+ idEsp int unsigned,
+ idPaciente int unsigned
+
+ )ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=1;
 
 
-INSERT INTO Cita (fechaCita, fk_idEsp, fk_idPaciente) VALUES
+INSERT INTO Cita (fechaCita, idEsp, idPaciente) VALUES
 ('2024-12-10', 1, 1),
 ('2024-12-12', 2, 2),
 ('2024-12-15', 3, 3),

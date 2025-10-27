@@ -2,7 +2,7 @@ package com.yubo.DAO;
 
 
 
-import com.yubo.domain.Cita;
+import com.yubo.Model.Cita;
 import com.yubo.util.R;
 
 import java.io.IOException;
