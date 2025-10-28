@@ -29,10 +29,21 @@ public class Cita implements Serializable {
     public Cita() {
     }
 
-    public Cita(int idCita, Date fechaCita, String nombreEsp) {
+    public Cita(int idCita, Date fechaCita, String nombreEsp, Paciente paciente) {
         this.idCita = idCita;
         this.fechaCita = fechaCita;
         this.nombreEsp = nombreEsp;
+        this.paciente = paciente;
+    }
+
+    @Override
+    public String toString() {
+        return "Cita{" +
+                "idCita=" + idCita +
+                ", fechaCita=" + fechaCita +
+                ", nombreEsp='" + nombreEsp + '\'' +
+                ", paciente=" + paciente +
+                '}';
     }
 
     public int getIdCita() {
@@ -60,14 +71,7 @@ public class Cita implements Serializable {
         this.nombreEsp = nombreEsp;
     }
 
-    @Override
-    public String toString() {
-        return "Cita{" +
-                "idCita=" + idCita +
-                ", fechaCita=" + fechaCita +
-                ", nombreEsp='" + nombreEsp + '\'' +
-                '}';
-    }
+
     public Paciente getPaciente() { return paciente; }
     public void setPaciente(Paciente paciente) { this.paciente = paciente; }
 }

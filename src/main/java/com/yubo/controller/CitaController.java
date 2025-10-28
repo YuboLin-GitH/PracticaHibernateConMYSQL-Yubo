@@ -14,6 +14,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.hibernate.Session;
+
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
@@ -87,11 +89,13 @@ public class CitaController {
         try (Session session = HibernateUtil.getSession()){
             List<Cita> citas= citaDAO.listarCita(session);
             List<Cita> estePaciente = new ArrayList<>();
+
             for (Cita c : citas) {
                 if (c.getPaciente() != null && c.getPaciente().getIdPaciente() == paciente.getIdPaciente()) {
                     estePaciente.add(c);
                 }
             }
+
             tvCitasPaciente.setItems(FXCollections.observableList(estePaciente));
         }
     }
@@ -101,6 +105,8 @@ public class CitaController {
         this.paciente = paciente;
         mostrarDatosPaciente();
     }
+
+
     private void mostrarDatosPaciente() {
         tfNombre.setText(paciente.getNombre());
         tfDireccion.setText(paciente.getDireccion());
@@ -138,6 +144,8 @@ public class CitaController {
             e.printStackTrace();
         }
     }
+
+
     private void enlazarSeleccionDeTabla() {
         tvCitasPaciente.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
@@ -166,6 +174,7 @@ public class CitaController {
         cargarDatos();
     }
 
+
     @FXML
     public void nuevaCita() {
 
@@ -191,6 +200,68 @@ public class CitaController {
             System.out.println("Error de Insertar Cita");
         }
     }
+
+
+    @FXML
+    public void modificarCita() {
+        if (citaSeleccionada == null) {
+            AlertUtils.mostrarError("El seleccionado no existe");
+            return;
+        }
+        LocalDate fechaModificada = dpFechaCita.getValue();
+        Especialidad espModificada = cbEspecialidad.getValue();
+        if (fechaModificada == null || espModificada == null) {
+            AlertUtils.mostrarError("Eliger bien cita y especificada");
+            return;
+        }
+        try (Session session = HibernateUtil.getSession()) {
+
+
+            citaSeleccionada.setIdCita(citaSeleccionada.getIdCita());
+            citaSeleccionada.setFechaCita(Date.valueOf(fechaModificada));
+            citaSeleccionada.setNombreEsp(espModificada.getNombreEsp());
+            citaSeleccionada.setPaciente(paciente);
+
+
+            citaDAO.modificarCita(session, citaSeleccionada);
+            AlertUtils.mostrarInformacion("Cita actualizada");
+
+
+            verCita();
+            limpiarCajas();
+            citaSeleccionada = null;
+        } catch (Exception e) {
+            AlertUtils.mostrarError("Error：" + e.getMessage());
+
+        }
+    }
+
+
+
+    @FXML
+    public  void borrarCita(){
+
+
+        if (citaSeleccionada == null) {
+            AlertUtils.mostrarError("el seleccionado no existe");
+            return;
+        }
+        try (Session session = HibernateUtil.getSession()){
+
+
+            citaDAO.borrarCita(session, citaSeleccionada);
+            AlertUtils.mostrarInformacion("Cita eliminada");
+
+
+            verCita();
+            limpiarCajas();
+            citaSeleccionada = null;
+        } catch (Exception e) {
+            AlertUtils.mostrarError("Error：" + e.getMessage());
+        }
+
+    }
+
 
 
 
