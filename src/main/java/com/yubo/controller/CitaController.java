@@ -94,6 +94,8 @@ public class CitaController {
             }
 
             tvCitasPaciente.setItems(FXCollections.observableList(estePaciente));
+        }catch (Exception e){
+            AlertUtils.mostrarError("Error：" + e.getMessage());
         }
     }
 
