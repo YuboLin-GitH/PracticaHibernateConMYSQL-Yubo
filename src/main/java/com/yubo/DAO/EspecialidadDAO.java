@@ -12,7 +12,6 @@ import java.util.List;
 
 
 public class EspecialidadDAO {
-
     private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
 
     public static List<Especialidad> obtenerEspecialidad() throws IOException {

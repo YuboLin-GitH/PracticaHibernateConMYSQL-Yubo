@@ -15,10 +15,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.hibernate.Session;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.ZoneId;
-
 
 
 import java.sql.Date;

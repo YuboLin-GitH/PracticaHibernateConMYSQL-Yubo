@@ -1,6 +1,7 @@
 package com.yubo.controller;
 
 import com.yubo.DAO.UsuarioDAO;
+import com.yubo.DAO.UsuarioDAOImpl;
 import com.yubo.Model.Paciente;
 import com.yubo.util.R;
 import javafx.fxml.FXML;
@@ -16,7 +17,7 @@ import javafx.stage.Stage;
 
 public class IniciaSesiconController {
 
-    private UsuarioDAO usuarioDAO = new UsuarioDAO();
+    private UsuarioDAO usuarioDAO = new UsuarioDAOImpl();
 
     @FXML
     private TextField tfPaciente;
