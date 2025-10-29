@@ -4,6 +4,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -16,7 +17,7 @@ public class Cita implements Serializable {
     private int idCita;
 
     @Column(name = "fechaCita")
-    private Date fechaCita;
+    private LocalDate fechaCita;
 
     @Column(name = "nombreEsp")
     private String nombreEsp;
@@ -29,7 +30,7 @@ public class Cita implements Serializable {
     public Cita() {
     }
 
-    public Cita(int idCita, Date fechaCita, String nombreEsp, Paciente paciente) {
+    public Cita(int idCita, LocalDate fechaCita, String nombreEsp, Paciente paciente) {
         this.idCita = idCita;
         this.fechaCita = fechaCita;
         this.nombreEsp = nombreEsp;
@@ -54,11 +55,11 @@ public class Cita implements Serializable {
         this.idCita = idCita;
     }
 
-    public Date getFechaCita() {
+    public LocalDate getFechaCita() {
         return fechaCita;
     }
 
-    public void setFechaCita(Date fechaCita) {
+    public void setFechaCita(LocalDate fechaCita) {
         this.fechaCita = fechaCita;
     }
 

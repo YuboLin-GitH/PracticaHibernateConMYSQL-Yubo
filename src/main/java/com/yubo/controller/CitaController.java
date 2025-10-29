@@ -54,7 +54,7 @@ public class CitaController {
     @FXML
     private TableColumn<Cita, Integer> colIdCita;
     @FXML
-    private TableColumn<Cita, Date> colFecha;
+    private TableColumn<Cita, LocalDate> colFecha;
     @FXML
     private TableColumn<Cita, String> colEspecialidad;
 
@@ -94,8 +94,6 @@ public class CitaController {
             }
 
             tvCitasPaciente.setItems(FXCollections.observableList(estePaciente));
-        }catch (Exception e){
-            AlertUtils.mostrarError("Error：" + e.getMessage());
         }
     }
 
@@ -149,14 +147,9 @@ public class CitaController {
         tvCitasPaciente.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
                 citaSeleccionada = newVal;
-            if (newVal.getFechaCita() != null) {
-                dpFechaCita.setValue(
-                        newVal.getFechaCita().toInstant()
-                                .atZone(java.time.ZoneId.systemDefault())
-                                .toLocalDate()
-                );
-            }
-
+                if (newVal.getFechaCita() != null) {
+                    dpFechaCita.setValue(newVal.getFechaCita());
+                }
                 for (Especialidad esp : cbEspecialidad.getItems()) {
                     if (esp.getNombreEsp().equals(newVal.getNombreEsp())) {
                         cbEspecialidad.setValue(esp);
@@ -185,7 +178,7 @@ public class CitaController {
         }
         try(Session session = HibernateUtil.getSession()) {
             Cita c = new Cita();
-            c.setFechaCita(Date.valueOf(fechaSeleccionada));
+            c.setFechaCita(fechaSeleccionada);
             c.setNombreEsp(espSeleccionada.getNombreEsp());
             c.setPaciente(paciente);
 
@@ -217,7 +210,7 @@ public class CitaController {
 
 
             citaSeleccionada.setIdCita(citaSeleccionada.getIdCita());
-            citaSeleccionada.setFechaCita(Date.valueOf(fechaModificada));
+            citaSeleccionada.setFechaCita(fechaModificada);
             citaSeleccionada.setNombreEsp(espModificada.getNombreEsp());
             citaSeleccionada.setPaciente(paciente);
 
